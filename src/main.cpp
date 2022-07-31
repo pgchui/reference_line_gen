@@ -1,10 +1,15 @@
-#include <OsqpEigen/OsqpEigen.h>
 #include <iostream>
+#include <vector>
 
-const double smooth_weight = 1.0;
-const double shape_weight = 0.1;
-const double compact_weight = 10.0;
-const double position_buffer = 0.5;
+#include <OsqpEigen/OsqpEigen.h>
+#include <matplotlibcpp.h>
+
+const double smooth_weight = 100.0;
+const double shape_weight = 1.0;
+const double compact_weight = 1.0;
+const double position_buffer = 0.1;
+
+namespace plt = matplotlibcpp;
 
 void getHessianMatrix(size_t num_pts, double w_smooth, double w_shape, double w_compact, Eigen::SparseMatrix<double>& mat_p, bool debug=false)
 {
@@ -68,8 +73,8 @@ void getBounds(size_t num_pts, Eigen::VectorXd& pos_ref, double pos_buffer, Eige
 int main(int argc, char** argv)
 {
     // test variable
-    Eigen::VectorXd pos_ref(8);
-    pos_ref << 0, 0, 0, 1, 0, 2, 0, 4;
+    Eigen::VectorXd pos_ref(20);
+    pos_ref << 0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 1, 5, 2, 5, 3, 5, 4, 5;
 
     size_t num_pts = pos_ref.size() / 2;
     double w_smooth = smooth_weight, w_shape = shape_weight, w_compact = compact_weight;
@@ -107,9 +112,25 @@ int main(int argc, char** argv)
     // solve QP problem
     if (solver.solveProblem() != OsqpEigen::ErrorExitFlag::NoError) return EXIT_FAILURE;
     Eigen::VectorXd qp_solution = solver.getSolution();
-    std::cout << "qp solution:\n" << qp_solution << std::endl;
+    // std::cout << "qp solution:\n" << qp_solution << std::endl;
     // // update QP constraints
     // if (!solver.updateBounds(vec_lower_bounds, vec_upper_bounds)) return EXIT_FAILURE;
+    
+    // display using matplotlib
+    Eigen::VectorXd x_ref(num_pts), y_ref(num_pts), x_solved(num_pts), y_solved(num_pts);
+    for (int i = 0; i < num_pts; ++i)
+    {
+        x_ref(i) = pos_ref(i * 2);
+        y_ref(i) = pos_ref(i * 2 + 1);
+        x_solved(i) = qp_solution(i * 2);
+        y_solved(i) = qp_solution(i * 2 + 1);
+    }
+    plt::figure();
+    plt::plot(x_ref, y_ref, "r*-", {{"label", "ref"}});
+    plt::plot(x_solved, y_solved, "b*-", {{"label", "solved"}});
+    // plt::plot(x_ref, y_ref);
+    plt::legend();
+    plt::show();
 
     return EXIT_SUCCESS;
 }
