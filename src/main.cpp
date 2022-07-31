@@ -1,6 +1,11 @@
 #include <OsqpEigen/OsqpEigen.h>
 #include <iostream>
 
+const double smooth_weight = 1.0;
+const double shape_weight = 0.1;
+const double compact_weight = 10.0;
+const double position_buffer = 0.5;
+
 void getHessianMatrix(size_t num_pts, double w_smooth, double w_shape, double w_compact, Eigen::SparseMatrix<double>& mat_p, bool debug=false)
 {
     mat_p.resize(2 * num_pts, 2 * num_pts);
@@ -63,12 +68,12 @@ void getBounds(size_t num_pts, Eigen::VectorXd& pos_ref, double pos_buffer, Eige
 int main(int argc, char** argv)
 {
     // test variable
-    Eigen::VectorXd pos_ref(6);
-    pos_ref << 0, 0, 0, 1, 0, 2;
+    Eigen::VectorXd pos_ref(8);
+    pos_ref << 0, 0, 0, 1, 0, 2, 0, 4;
 
     size_t num_pts = pos_ref.size() / 2;
-    double w_smooth = 1.0, w_shape = 1.0, w_compact = 1.0;
-    double pos_buffer = 0.5;
+    double w_smooth = smooth_weight, w_shape = shape_weight, w_compact = compact_weight;
+    double pos_buffer = position_buffer;
     // declare QP variables
     size_t num_variables = pos_ref.size(), num_constraints = pos_ref.size();
     Eigen::SparseMatrix<double> mat_p;
