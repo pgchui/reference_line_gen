@@ -6,8 +6,8 @@
 
 const double smooth_weight = 100.0;
 const double shape_weight = 1.0;
-const double compact_weight = 1.0;
-const double position_buffer = 0.1;
+const double compact_weight = 100.0;
+const double position_buffer = 0.25;
 
 namespace plt = matplotlibcpp;
 
@@ -73,8 +73,17 @@ void getBounds(size_t num_pts, Eigen::VectorXd& pos_ref, double pos_buffer, Eige
 int main(int argc, char** argv)
 {
     // test variable
-    Eigen::VectorXd pos_ref(20);
-    pos_ref << 0, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 1, 5, 2, 5, 3, 5, 4, 5;
+    Eigen::VectorXd pos_ref(80);
+    pos_ref << 0, 0, 0, 0.25, 0, 0.5, 0, 0.75,
+               0, 1, 0, 1.25, 0, 1.5, 0, 1.75,
+               0, 2, 0, 2.25, 0, 2.5, 0, 2.75,
+               0, 3, 0, 3.25, 0, 3.5, 0, 3.75,
+               0, 4, 0, 4.25, 0, 4.5, 0, 4.75,
+               0, 5, 0, 5.25, 0, 5.5, 0, 5.75,
+               1, 7, 1, 7.25, 1, 7.5, 1, 7.75,
+               1, 8, 1, 8.25, 1, 8.5, 1, 8.75,
+               1, 9, 1, 9.25, 1, 9.5, 1, 9.75,
+               1, 10, 1, 10.25, 1, 10.5, 1, 10.75;
 
     size_t num_pts = pos_ref.size() / 2;
     double w_smooth = smooth_weight, w_shape = shape_weight, w_compact = compact_weight;
@@ -129,6 +138,8 @@ int main(int argc, char** argv)
     plt::plot(x_ref, y_ref, "r*-", {{"label", "ref"}});
     plt::plot(x_solved, y_solved, "b*-", {{"label", "solved"}});
     // plt::plot(x_ref, y_ref);
+    plt::xlim(-1, 11);
+    plt::ylim(-1, 11);
     plt::legend();
     plt::show();
 
