@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "/usr/local/include/OsqpEigen",
                 "/usr/local/include/osqp",
-                "/usr/include/eigen3"
+                "/usr/include/eigen3",
+                "/usr/include/python3.8"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
