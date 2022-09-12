@@ -7,7 +7,7 @@
 const double smooth_weight = 100.0;
 const double shape_weight = 1.0;
 const double compact_weight = 1.0;
-const double position_buffer = 0.25;
+const double position_buffer = 0.1;
 
 namespace plt = matplotlibcpp;
 
