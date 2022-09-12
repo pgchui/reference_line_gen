@@ -6,7 +6,7 @@
 
 const double smooth_weight = 100.0;
 const double shape_weight = 1.0;
-const double compact_weight = 100.0;
+const double compact_weight = 1.0;
 const double position_buffer = 0.25;
 
 namespace plt = matplotlibcpp;
@@ -73,14 +73,15 @@ void getBounds(size_t num_pts, Eigen::VectorXd& pos_ref, double pos_buffer, Eige
 int main(int argc, char** argv)
 {
     // test variable
-    Eigen::VectorXd pos_ref(80);
+    Eigen::VectorXd pos_ref(88);
     pos_ref << 0, 0, 0, 0.25, 0, 0.5, 0, 0.75,
                0, 1, 0, 1.25, 0, 1.5, 0, 1.75,
                0, 2, 0, 2.25, 0, 2.5, 0, 2.75,
                0, 3, 0, 3.25, 0, 3.5, 0, 3.75,
                0, 4, 0, 4.25, 0, 4.5, 0, 4.75,
                0, 5, 0, 5.25, 0, 5.5, 0, 5.75,
-               1, 7, 1, 7.25, 1, 7.5, 1, 7.75,
+               0.125, 6, 0.25, 6.25, 0.375, 6.5, 0.5, 6.75,
+               0.625, 7, 0.75, 7.25, 0.875, 7.5, 1.0, 7.75,
                1, 8, 1, 8.25, 1, 8.5, 1, 8.75,
                1, 9, 1, 9.25, 1, 9.5, 1, 9.75,
                1, 10, 1, 10.25, 1, 10.5, 1, 10.75;
